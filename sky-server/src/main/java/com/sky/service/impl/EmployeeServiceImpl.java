@@ -2,6 +2,7 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.anno.AutoFill;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
@@ -78,8 +79,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee1=new Employee();
         employee1.setId(id);
         employee1.setPassword(password);
-        employee1.setUpdateTime(LocalDateTime.now());
-        employee1.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.update(employee1);
     }
 
@@ -89,12 +88,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         //对象属性拷贝
         BeanUtils.copyProperties(employeeDTO,employee);
         employee.setStatus(StatusConstant.ENABLE);
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        Long currentId = BaseContext.getCurrentId();
-        employee.setUpdateUser(currentId);
-        employee.setCreateUser(currentId);
         employeeMapper.add(employee);
     }
 
@@ -119,8 +113,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = Employee.builder()
                 .status(status)
                 .id(id)
-                .updateTime(LocalDateTime.now())
-                .updateUser(BaseContext.getCurrentId())
                 .build();
         employeeMapper.update(employee);
     }
@@ -129,8 +121,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void update(EmployeeDTO employeeDTO) {
         Employee employee=new Employee();
         BeanUtils.copyProperties(employeeDTO,employee);
-        employee.setUpdateUser(BaseContext.getCurrentId());
-        employee.setUpdateTime(LocalDateTime.now());
         employeeMapper.update(employee);
     }
 }
